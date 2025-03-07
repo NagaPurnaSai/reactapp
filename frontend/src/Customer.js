@@ -9,7 +9,7 @@ function Customer() {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    axios.get("https://reactapp-git-main-purnasais-projects.vercel.app/juices")
+    axios.get("https://node-react-backend.vercel.app/juices")
       .then((res) => setJuices(res.data))
       .catch((err) => console.error("Error fetching juices", err));
   }, []);
@@ -17,7 +17,7 @@ function Customer() {
   const addToCart = (juice) => setCart([...cart, juice]);
 
   const placeOrder = async () => {
-    await axios.post("https://reactapp-git-main-purnasais-projects.vercel.app/order", { name, phone, items: cart });
+    await axios.post("https://node-react-backend.vercel.app/order", { name, phone, items: cart });
     alert("Order placed successfully!");
   };
 
