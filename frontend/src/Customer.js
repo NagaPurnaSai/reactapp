@@ -31,7 +31,7 @@ function Customer() {
       alert("Please select at least one juice before proceeding.");
       return;
     }
-    await axios.post("https://node-react-backend.vercel.app/order", {
+    await axios.post("https://backendreact-nu.vercel.app/order", {
       name,
       phone,
       items: cart,
