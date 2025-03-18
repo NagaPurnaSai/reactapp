@@ -5,7 +5,7 @@ function Admin() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("https://backendreact-nu.vercel.app//orders")
+    axios.get("https://backendreact-nu.vercel.app/orders")
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error fetching orders", err));
   }, []);
