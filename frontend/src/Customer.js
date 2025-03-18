@@ -13,7 +13,7 @@ function Customer() {
 
   useEffect(() => {
     axios
-      .get("https://node-react-backend.vercel.app/juices")
+      .get("https://backendreact-nu.vercel.app/juices")
       .then((res) => setJuices(res.data))
       .catch((err) => console.error("Error fetching juices", err));
   }, []);
