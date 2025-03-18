@@ -13,7 +13,7 @@ function Customer() {
 
   useEffect(() => {
     axios
-      .get("https://backendreact-nu.vercel.app/juices")
+      .get("https://node-react-backend.vercel.app/juices")
       .then((res) => setJuices(res.data))
       .catch((err) => console.error("Error fetching juices", err));
   }, []);
@@ -31,7 +31,7 @@ function Customer() {
       alert("Please select at least one juice before proceeding.");
       return;
     }
-    await axios.post("https://backendreact-nu.vercel.app/order", {
+    await axios.post("https://node-react-backend.vercel.app/order", {
       name,
       phone,
       items: cart,
