@@ -68,7 +68,35 @@ app.get('/orders', async (req, res) => {
     if (error) return res.status(400).json(error);
     res.json(data);
 });
+// ✅ Add a new juice
+app.post('/juices', async (req, res) => {
+    const { name, price } = req.body;
+
+    const { data, error } = await supabase.from('juices').insert([{ name, price }]);
+
+    if (error) return res.status(400).json(error);
+    res.json({ message: 'Juice added successfully', juice: data });
+});
+
+// ✅ Delete a juice
+app.delete('/juices/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase.from('juices').delete().eq('id', id);
+
+    if (error) return res.status(400).json(error);
+    res.json({ message: 'Juice deleted successfully' });
+});
+
+// ✅ Delete an order when completed
+app.delete('/orders/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const { error } = await supabase.from('orders').delete().eq('id', id);
+
+    if (error) return res.status(400).json(error);
+    res.json({ message: 'Order marked as completed and deleted' });
+});
 
 // ✅ Start server
 app.listen(5000, () => console.log('Server running on port 5000'));
-
