@@ -9,6 +9,8 @@ app.use(cors());
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
+console.log(supabase);
+
 // Customer login
 app.post('/login', async (req, res) => {
     const { name, phone } = req.body;
