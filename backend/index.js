@@ -11,23 +11,49 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 console.log(supabase);
 
-// Customer login
+// ✅ Customer login
 app.post('/login', async (req, res) => {
     const { name, phone } = req.body;
-    const { data, error } = await supabase.from('customers').upsert([{ name, phone }]);
 
-    if (error) return res.status(400).json(error);
-    res.json({ message: 'Login successful', user: data });
+    try {
+        // Check if user already exists
+        let { data: existingUser, error: fetchError } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('phone', phone)
+            .single();
+
+        if (fetchError && fetchError.code !== 'PGRST116') {
+            return res.status(400).json(fetchError);
+        }
+
+        if (existingUser) {
+            return res.json({ message: 'User already exists', user: existingUser });
+        }
+
+        // Insert new user if not exists
+        const { data, error } = await supabase
+            .from('customers')
+            .insert([{ name, phone }])
+            .select();
+
+        if (error) return res.status(400).json(error);
+        res.json({ message: 'Login successful', user: data });
+
+    } catch (err) {
+        console.error("Error in login:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
-// Fetch juices
+// ✅ Fetch juices
 app.get('/juices', async (req, res) => {
     const { data, error } = await supabase.from('juices').select('*');
     if (error) return res.status(400).json(error);
     res.json(data);
 });
 
-// Place order
+// ✅ Place order
 app.post('/order', async (req, res) => {
     const { name, phone, items } = req.body;
     const { data, error } = await supabase.from('orders').insert([{ name, phone, items }]);
@@ -36,12 +62,13 @@ app.post('/order', async (req, res) => {
     res.json({ message: 'Order placed successfully', order: data });
 });
 
-// Admin - View orders
+// ✅ Admin - View orders
 app.get('/orders', async (req, res) => {
     const { data, error } = await supabase.from('orders').select('*');
     if (error) return res.status(400).json(error);
     res.json(data);
 });
 
+// ✅ Start server
 app.listen(5000, () => console.log('Server running on port 5000'));
 
